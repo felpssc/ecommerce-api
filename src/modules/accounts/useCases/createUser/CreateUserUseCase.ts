@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { container, inject, injectable } from "tsyringe";
 
+import { SendEmailVerification } from "../../../../helpers/sendEmailVerification/implementations/SendEmailVerification";
 import { AppError } from "../../../../shared/errors/AppError";
 import { User } from "../../entities/User";
 import {
@@ -27,6 +28,13 @@ class CreateUserUseCase {
     const user = await this.usersRepository.create({
       email,
       password: hashedPassword,
+    });
+
+    const sendEmailVerification = container.resolve(SendEmailVerification);
+
+    await sendEmailVerification.execute({
+      email,
+      user_id: user.id,
     });
 
     return user.hidePassword();
