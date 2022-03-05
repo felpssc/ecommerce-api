@@ -2,21 +2,30 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
-@Entity("users")
-class User {
+import { Address } from "./Address";
+
+@Entity("clients")
+class Client {
   @PrimaryColumn("uuid")
   id: string;
+
+  @Column()
+  name: string;
 
   @Column()
   email: string;
 
   @Column()
   password: string;
+
+  @Column()
+  phone: string;
 
   @Column({ default: false })
   active: boolean;
@@ -31,8 +40,12 @@ class User {
   })
   updated_at: Date;
 
-  hidePassword() {
+  @OneToMany(() => Address, (address) => address.clientId)
+  addresses?: Address[];
+
+  hidePassword(): Client {
     delete this.password;
+
     return this;
   }
 
@@ -43,4 +56,4 @@ class User {
   }
 }
 
-export { User };
+export { Client };
