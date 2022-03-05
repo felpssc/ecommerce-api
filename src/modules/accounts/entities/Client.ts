@@ -4,6 +4,7 @@ import {
   Entity,
   OneToMany,
   PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
@@ -32,11 +33,21 @@ class Client {
   @CreateDateColumn()
   created_at: Date;
 
-  @CreateDateColumn()
+  @UpdateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+    onUpdate: "CURRENT_TIMESTAMP(6)",
+  })
   updated_at: Date;
 
   @OneToMany(() => Address, (address) => address.clientId)
   addresses?: Address[];
+
+  hidePassword(): Client {
+    delete this.password;
+
+    return this;
+  }
 
   constructor() {
     if (!this.id) {
