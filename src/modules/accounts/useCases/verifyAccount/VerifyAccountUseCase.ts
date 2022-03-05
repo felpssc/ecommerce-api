@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 
 import { AppError } from "../../../../shared/errors/AppError";
 import { IAccountVerificationRepository } from "../../repositories/IAccountVerificationRepository";
+import { IClientsRepository } from "../../repositories/IClientsRepository";
 import { IUsersRepository } from "../../repositories/IUsersRepository";
 
 @injectable()
@@ -10,7 +11,9 @@ class VerifyAccountUseCase {
     @inject("AccountVerificationRepository")
     private accountVerificationRepository: IAccountVerificationRepository,
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+    @inject("ClientsRepository")
+    private clientsRepository: IClientsRepository
   ) {}
 
   async execute(code: string): Promise<void> {
@@ -24,7 +27,13 @@ class VerifyAccountUseCase {
       );
     }
 
-    await this.usersRepository.activateUser(codeExists.user_id);
+    if (codeExists.user_id) {
+      await this.usersRepository.activateUser(codeExists.user_id);
+    }
+
+    if (codeExists.client_id) {
+      await this.clientsRepository.activateClient(codeExists.client_id);
+    }
 
     await this.accountVerificationRepository.deleteById(codeExists.id);
   }

@@ -8,6 +8,6 @@ const router = Router();
 
 router.use("/users", UsersRoutes);
 router.use("/clients", ClientsRoutes);
-router.use("/sessions", AuthenticateRoutes);
+router.use("/auth", AuthenticateRoutes);
 
 export { router };

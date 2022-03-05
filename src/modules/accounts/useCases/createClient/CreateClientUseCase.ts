@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
-import { inject, injectable } from "tsyringe";
+import { container, inject, injectable } from "tsyringe";
 
+import { SendEmailVerification } from "../../../../helpers/sendEmailVerification/implementations/SendEmailVerification";
 import { AppError } from "../../../../shared/errors/AppError";
 import { Client } from "../../entities/Client";
 import {
@@ -63,8 +64,15 @@ class CreateClientUseCase {
       clientId: client.id,
     });
 
+    const sendEmailVerification = container.resolve(SendEmailVerification);
+
+    await sendEmailVerification.execute({
+      email,
+      client_id: client.id,
+    });
+
     const responseClient: IResponse = {
-      client,
+      client: client.hidePassword(),
       address: {
         street: clientAddress.street,
         district: clientAddress.district,
