@@ -10,6 +10,8 @@ import { AddressesRepository } from "../../modules/accounts/repositories/impleme
 import { ClientsRepository } from "../../modules/accounts/repositories/implementations/ClientsRepository";
 import { UsersRepository } from "../../modules/accounts/repositories/implementations/UsersRepository";
 import { IUsersRepository } from "../../modules/accounts/repositories/IUsersRepository";
+import { ProductsRepository } from "../../modules/products/repositories/implementations/ProductsRepository";
+import { IProductsRepository } from "../../modules/products/repositories/IProductsRepository";
 import { IMailProvider } from "./MailProvider/IMailProvider";
 import { MailProvider } from "./MailProvider/implementations/MailProvider";
 
@@ -33,9 +35,14 @@ container.registerSingleton<IAccountVerificationRepository>(
   AccountVerificationRepository
 );
 
-container.registerInstance<IMailProvider>("MailProvider", new MailProvider());
-
 container.registerSingleton<ISendEmailVerification>(
   "SendEmailVerification",
   SendEmailVerification
 );
+
+container.registerSingleton<IProductsRepository>(
+  "ProductsRepository",
+  ProductsRepository
+);
+
+container.registerInstance<IMailProvider>("MailProvider", new MailProvider());
