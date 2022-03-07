@@ -12,8 +12,8 @@ import { UsersRepository } from "../../modules/accounts/repositories/implementat
 import { IUsersRepository } from "../../modules/accounts/repositories/IUsersRepository";
 import { ProductsRepository } from "../../modules/products/repositories/implementations/ProductsRepository";
 import { IProductsRepository } from "../../modules/products/repositories/IProductsRepository";
-import { IMailProvider } from "./MailProvider/IMailProvider";
-import { MailProvider } from "./MailProvider/implementations/MailProvider";
+import { IMailProvider } from "./providers/MailProvider/IMailProvider";
+import { MailProvider } from "./providers/MailProvider/implementations/MailProvider";
 
 container.registerSingleton<IUsersRepository>(
   "UsersRepository",

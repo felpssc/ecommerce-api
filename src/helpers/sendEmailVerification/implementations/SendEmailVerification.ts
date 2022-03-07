@@ -3,8 +3,8 @@ import { injectable, inject, container } from "tsyringe";
 import { v4 as uuidv4 } from "uuid";
 
 import { IAccountVerificationRepository } from "../../../modules/accounts/repositories/IAccountVerificationRepository";
-import { IMailProvider } from "../../../shared/container/MailProvider/IMailProvider";
-import { MailProvider } from "../../../shared/container/MailProvider/implementations/MailProvider";
+import { IMailProvider } from "../../../shared/container/providers/MailProvider/IMailProvider";
+import { MailProvider } from "../../../shared/container/providers/MailProvider/implementations/MailProvider";
 import {
   ISendEmailVerification,
   ISendEmailVerificationDTO,
