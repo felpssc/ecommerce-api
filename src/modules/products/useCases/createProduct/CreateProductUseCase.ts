@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 
-import { createProductSchema } from "../../../../helpers/validators/createProduct.validator";
+import { createProductSchema } from "../../../../helpers/validators/product/createProduct.validator";
 import { AppError } from "../../../../shared/errors/AppError";
 import { Product } from "../../entities/Product";
 import {
