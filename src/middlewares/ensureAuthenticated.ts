@@ -7,7 +7,7 @@ import { UsersRepository } from "../modules/accounts/repositories/implementation
 import { AppError } from "../shared/errors/AppError";
 
 interface IPayload {
-  user: {
+  authenticated: {
     email: string;
     user_type: string;
   };
@@ -28,16 +28,16 @@ export async function ensureAuthenticated(
 
   const [, token] = authHeader.split(" ");
 
-  const { user, sub } = jwt.verify(token, jwtSecret) as IPayload;
+  const { authenticated, sub } = jwt.verify(token, jwtSecret) as IPayload;
 
-  if (!user) {
+  if (!authenticated) {
     throw new AppError("Invalid token", 401);
   }
 
   const usersRepository = new UsersRepository();
   const clientsRepository = new ClientsRepository();
 
-  if (user.user_type === "user") {
+  if (authenticated.user_type === "user") {
     const user = await usersRepository.findById(sub);
 
     if (!user) {
@@ -45,7 +45,7 @@ export async function ensureAuthenticated(
     }
   }
 
-  if (user.user_type === "client") {
+  if (authenticated.user_type === "client") {
     const client = await clientsRepository.findById(sub);
 
     if (!client) {

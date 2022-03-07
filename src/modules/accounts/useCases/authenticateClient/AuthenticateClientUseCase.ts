@@ -44,7 +44,7 @@ class AuthenticateClientUseCase {
 
     const token = jwt.sign(
       {
-        client: {
+        authenticated: {
           email: client.email,
           user_type: "client",
         },
