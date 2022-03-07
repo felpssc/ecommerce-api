@@ -10,10 +10,14 @@ import { AddressesRepository } from "../../modules/accounts/repositories/impleme
 import { ClientsRepository } from "../../modules/accounts/repositories/implementations/ClientsRepository";
 import { UsersRepository } from "../../modules/accounts/repositories/implementations/UsersRepository";
 import { IUsersRepository } from "../../modules/accounts/repositories/IUsersRepository";
+import { IImagesProductRepository } from "../../modules/products/repositories/IImagesProductRepository";
+import { ImagesProductRepository } from "../../modules/products/repositories/implementations/ImagesProductRepository";
 import { ProductsRepository } from "../../modules/products/repositories/implementations/ProductsRepository";
 import { IProductsRepository } from "../../modules/products/repositories/IProductsRepository";
 import { IMailProvider } from "./providers/MailProvider/IMailProvider";
 import { MailProvider } from "./providers/MailProvider/implementations/MailProvider";
+import { S3StorageProvider } from "./providers/StorageProvider/implementations/S3StorageProvider";
+import { IStorageProvider } from "./providers/StorageProvider/IStorageProvider";
 
 container.registerSingleton<IUsersRepository>(
   "UsersRepository",
@@ -43,6 +47,16 @@ container.registerSingleton<ISendEmailVerification>(
 container.registerSingleton<IProductsRepository>(
   "ProductsRepository",
   ProductsRepository
+);
+
+container.registerSingleton<IImagesProductRepository>(
+  "ImagesProductRepository",
+  ImagesProductRepository
+);
+
+container.registerSingleton<IStorageProvider>(
+  "S3StorageProvider",
+  S3StorageProvider
 );
 
 container.registerInstance<IMailProvider>("MailProvider", new MailProvider());
