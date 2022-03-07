@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { container, inject, injectable } from "tsyringe";
 
 import { SendEmailVerification } from "../../../../helpers/sendEmailVerification/implementations/SendEmailVerification";
+import { createUserSchema } from "../../../../helpers/validators/user/createUser.validator";
 import { AppError } from "../../../../shared/errors/AppError";
 import { User } from "../../entities/User";
 import {
@@ -17,6 +18,12 @@ class CreateUserUseCase {
   ) {}
 
   async execute({ email, password }: ICreateUserDTO): Promise<User> {
+    const { error } = createUserSchema.validate({ email, password });
+
+    if (error) {
+      throw new AppError(error.message);
+    }
+
     const userAlreadyExists = await this.usersRepository.findByEmail(email);
 
     if (userAlreadyExists) {

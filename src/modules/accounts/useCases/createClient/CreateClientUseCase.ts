@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { container, inject, injectable } from "tsyringe";
 
 import { SendEmailVerification } from "../../../../helpers/sendEmailVerification/implementations/SendEmailVerification";
+import { createClientSchema } from "../../../../helpers/validators/client/createClient.validator";
 import { AppError } from "../../../../shared/errors/AppError";
 import { Client } from "../../entities/Client";
 import {
@@ -44,6 +45,18 @@ class CreateClientUseCase {
     phone,
     address,
   }: IRequest): Promise<IResponse> {
+    const { error, value } = createClientSchema.validate({
+      name,
+      email,
+      password,
+      phone,
+      address,
+    });
+
+    if (error) {
+      throw new AppError(error.message);
+    }
+
     const clientAlreadyExists = await this.clientsRepository.findByEmail(email);
 
     if (clientAlreadyExists) {
@@ -53,10 +66,8 @@ class CreateClientUseCase {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const client = await this.clientsRepository.create({
-      name,
-      email,
+      ...value,
       password: hashedPassword,
-      phone,
     });
 
     const clientAddress = await this.addressesRepository.create({
