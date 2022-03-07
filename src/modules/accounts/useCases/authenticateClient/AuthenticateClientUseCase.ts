@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
-import { jwtClientSecret } from "../../../../config/config";
+import { jwtSecret } from "../../../../config/config";
 import { AppError } from "../../../../shared/errors/AppError";
 import { IClientsRepository } from "../../repositories/IClientsRepository";
 
@@ -44,12 +44,12 @@ class AuthenticateClientUseCase {
 
     const token = jwt.sign(
       {
-        client: {
+        authenticated: {
           email: client.email,
           user_type: "client",
         },
       },
-      jwtClientSecret,
+      jwtSecret,
       {
         subject: client.id,
       }
