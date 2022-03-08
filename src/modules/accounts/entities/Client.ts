@@ -43,7 +43,7 @@ class Client {
   @OneToMany(() => Address, (address) => address.clientId)
   addresses?: Address[];
 
-  hidePassword(): Client {
+  get hidePassword(): Client {
     delete this.password;
 
     return this;
