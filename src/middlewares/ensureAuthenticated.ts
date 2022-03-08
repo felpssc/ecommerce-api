@@ -53,5 +53,10 @@ export async function ensureAuthenticated(
     }
   }
 
+  request.user = {
+    id: sub,
+    ...authenticated,
+  };
+
   return next();
 }
