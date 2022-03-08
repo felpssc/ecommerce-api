@@ -6,8 +6,30 @@ interface ICreateOrderDTO {
   status: "pending" | "delivered";
 }
 
-interface IOrdersRepository {
-  create({ clientId, payment_price }: ICreateOrderDTO): Promise<Order>;
+interface IParams {
+  id?: string;
+  startDate?: Date;
+  endDate?: Date;
+  clientId?: string;
+  minPaymentPrice?: number;
+  maxPaymentPrice?: number;
+  status?: "pending" | "delivered";
+  productId?: string;
 }
 
-export { ICreateOrderDTO, IOrdersRepository };
+interface IOrdersRepository {
+  create({ clientId, payment_price }: ICreateOrderDTO): Promise<Order>;
+  findAll({
+    id,
+    startDate,
+    endDate,
+    clientId,
+    minPaymentPrice,
+    maxPaymentPrice,
+    status,
+    productId,
+  }: IParams): Promise<[Order[], number]>;
+  findByClientId(clientId: string): Promise<Order[]>;
+}
+
+export { ICreateOrderDTO, IOrdersRepository, IParams };
