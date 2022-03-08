@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
+import { Order } from "../../orders/entities/Order";
 import { Address } from "./Address";
 
 @Entity("clients")
@@ -42,6 +43,9 @@ class Client {
 
   @OneToMany(() => Address, (address) => address.clientId)
   addresses?: Address[];
+
+  @OneToMany(() => Order, (order) => order.client)
+  orders: Order[];
 
   get hidePassword(): Client {
     delete this.password;

@@ -2,12 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
+  JoinColumn,
+  ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
+import { Product } from "../../products/entities/Product";
 import { Order } from "./Order";
 
 @Entity("product_order")
@@ -34,8 +36,12 @@ class ProductOrder {
   })
   updated_at: Date;
 
-  @OneToOne(() => Order, (order) => order.products)
+  @ManyToOne(() => Order, (order) => order.products)
   order: Order;
+
+  @ManyToOne(() => Product, (product) => product.productOrder)
+  @JoinColumn({ name: "productId" })
+  product: Product;
 
   constructor() {
     if (!this.id) {

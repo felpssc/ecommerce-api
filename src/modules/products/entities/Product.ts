@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
+import { ProductOrder } from "../../orders/entities/ProductOrder";
 import { ImageProduct } from "./ImageProduct";
 
 @Entity("products")
@@ -39,6 +40,9 @@ class Product {
 
   @OneToMany(() => ImageProduct, (imageProduct) => imageProduct.product)
   images: ImageProduct[];
+
+  @OneToMany(() => ProductOrder, (productOrder) => productOrder.product)
+  productOrder: ProductOrder;
 
   constructor() {
     if (!this.id) {

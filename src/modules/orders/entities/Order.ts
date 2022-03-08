@@ -2,12 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { v4 as uuidv4 } from "uuid";
 
+import { Client } from "../../accounts/entities/Client";
 import { ProductOrder } from "./ProductOrder";
 
 @Entity("orders")
@@ -36,6 +38,9 @@ class Order {
 
   @OneToMany(() => ProductOrder, (productOrder) => productOrder.order)
   products: ProductOrder[];
+
+  @ManyToOne(() => Client, (client) => client)
+  client: Client;
 
   constructor() {
     if (!this.id) {
