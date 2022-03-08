@@ -7,6 +7,16 @@ interface ICreateProductDTO {
   characteristics: string;
 }
 
+interface IParams {
+  limit?: number | 10;
+  offset?: number | 0;
+  name?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  code?: string;
+  id?: string;
+}
+
 interface IProductsRepository {
   create({
     name,
@@ -14,9 +24,17 @@ interface IProductsRepository {
     code,
     characteristics,
   }: ICreateProductDTO): Promise<Product>;
-  findAll(): Promise<Product[]>;
+  findAll({
+    limit,
+    offset,
+    name,
+    minPrice,
+    maxPrice,
+    code,
+    id,
+  }: IParams): Promise<[Product[], number]>;
   findById(id: string): Promise<Product | undefined>;
   findByCode(code: string): Promise<Product | undefined>;
 }
 
-export { IProductsRepository, ICreateProductDTO };
+export { IProductsRepository, ICreateProductDTO, IParams };
