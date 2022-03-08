@@ -31,7 +31,7 @@ class User {
   })
   updated_at: Date;
 
-  hidePassword() {
+  get hidePassword() {
     delete this.password;
     return this;
   }

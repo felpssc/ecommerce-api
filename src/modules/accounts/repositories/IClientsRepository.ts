@@ -1,4 +1,5 @@
 import { Client } from "../entities/Client";
+import { IParams } from "../useCases/listClients/ListClientsUseCase";
 
 interface ICreateClientDTO {
   name: string;
@@ -12,6 +13,12 @@ interface IClientsRepository {
   findByEmail(email: string): Promise<Client | undefined>;
   findById(id: string): Promise<Client | undefined>;
   activateClient(id: string): Promise<Client | undefined>;
+  findAll({
+    limit,
+    offset,
+    email,
+    active,
+  }: IParams): Promise<[Client[], number]>;
 }
 
 export { IClientsRepository, ICreateClientDTO };

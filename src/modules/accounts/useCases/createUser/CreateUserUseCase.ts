@@ -44,7 +44,7 @@ class CreateUserUseCase {
       user_id: user.id,
     });
 
-    return user.hidePassword();
+    return user.hidePassword;
   }
 }
 

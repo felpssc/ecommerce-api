@@ -83,7 +83,7 @@ class CreateClientUseCase {
     });
 
     const responseClient: IResponse = {
-      client: client.hidePassword(),
+      client: client.hidePassword,
       address: {
         street: clientAddress.street,
         district: clientAddress.district,

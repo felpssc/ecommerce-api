@@ -1,4 +1,5 @@
 import { User } from "../entities/User";
+import { IParams } from "../useCases/listUsers/ListUsersUseCase";
 
 interface ICreateUserDTO {
   email: string;
@@ -10,6 +11,7 @@ interface IUsersRepository {
   findById(id: string): Promise<User | undefined>;
   create({ email, password }: ICreateUserDTO): Promise<User>;
   activateUser(id: string): Promise<User | undefined>;
+  findAll({ limit, offset, email, active }: IParams): Promise<[User[], number]>;
 }
 
 export { IUsersRepository, ICreateUserDTO };
