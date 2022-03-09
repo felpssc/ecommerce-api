@@ -23,6 +23,7 @@ export class CreateImageProducts1646503645035 implements MigrationInterface {
           {
             name: "productId",
             type: "uuid",
+            isNullable: true,
           },
           {
             name: "created_at",
@@ -40,7 +41,8 @@ export class CreateImageProducts1646503645035 implements MigrationInterface {
         columnNames: ["productId"],
         referencedColumnNames: ["id"],
         referencedTableName: "products",
-        onDelete: "CASCADE",
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
       })
     );
   }
