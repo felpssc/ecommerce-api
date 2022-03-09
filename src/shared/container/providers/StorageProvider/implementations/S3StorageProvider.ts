@@ -46,21 +46,13 @@ class S3StorageProvider implements IStorageProvider {
     return uploadedFiles;
   }
 
-  async listProductImages(keys: string[]) {
-    const images = await Promise.all(
-      keys.map(async (key) => {
-        const image = await this.client
-          .getObject({
-            Bucket: process.env.AWS_BUCKET_NAME,
-            Key: key,
-          })
-          .promise();
-
-        return image;
+  async deleteFile(file: string): Promise<void> {
+    await this.client
+      .deleteObject({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: file,
       })
-    );
-
-    return images;
+      .promise();
   }
 }
 

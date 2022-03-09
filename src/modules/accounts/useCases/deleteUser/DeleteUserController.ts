@@ -13,7 +13,7 @@ class DeleteUserController implements IController {
     await deleteUserUseCase.execute(user.id);
 
     return response.status(200).send({
-      message: "Conta deletada com sucesso",
+      message: "Account deleted successfully",
     });
   }
 }

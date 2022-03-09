@@ -12,6 +12,7 @@ import {
   ICreateProductDTO,
   IParams,
   IProductsRepository,
+  IUpdateProductDTO,
 } from "../IProductsRepository";
 
 class ProductsRepository implements IProductsRepository {
@@ -83,6 +84,29 @@ class ProductsRepository implements IProductsRepository {
     const product = await this.repository.findOne({ where: { code } });
 
     return product;
+  }
+
+  async update(
+    id: string,
+    { name, price, characteristics, code }: IUpdateProductDTO
+  ): Promise<Product | undefined> {
+    const product = await this.repository.findOne({ where: { id } });
+
+    if (name) product.name = name;
+
+    if (price) product.price = price;
+
+    if (characteristics) product.characteristics = characteristics;
+
+    if (code) product.code = code;
+
+    await this.repository.save(product);
+
+    return product;
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repository.delete(id);
   }
 }
 

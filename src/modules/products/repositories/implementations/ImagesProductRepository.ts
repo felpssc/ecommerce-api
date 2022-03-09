@@ -29,6 +29,16 @@ class ImagesProductRepository implements IImagesProductRepository {
 
     return keys.map((key) => key.file);
   }
+
+  async findById(id: string): Promise<ImageProduct> {
+    const image = await this.repository.findOne({ id });
+
+    return image;
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repository.delete({ id });
+  }
 }
 
 export { ImagesProductRepository };
