@@ -16,6 +16,8 @@ class ListOrdersController implements IController {
       clientId,
       status,
       productId,
+      limit,
+      offset,
     }: IParams = request.query;
 
     const listOrdersUseCase = container.resolve(ListOrdersUseCase);
@@ -29,6 +31,8 @@ class ListOrdersController implements IController {
       clientId,
       status,
       productId,
+      limit,
+      offset,
     });
 
     return response.json(orders);

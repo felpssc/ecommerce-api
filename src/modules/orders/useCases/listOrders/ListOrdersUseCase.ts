@@ -22,6 +22,8 @@ class ListOrdersUseCase {
     clientId,
     status,
     productId,
+    limit,
+    offset,
   }: IParams): Promise<[Order[], number]> {
     const orders = await this.ordersRepository.findAll({
       id,
@@ -32,6 +34,8 @@ class ListOrdersUseCase {
       clientId,
       status,
       productId,
+      limit,
+      offset,
     });
 
     return orders;

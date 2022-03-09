@@ -45,6 +45,8 @@ class OrdersRepository implements IOrdersRepository {
     maxPaymentPrice,
     status,
     productId,
+    limit,
+    offset,
   }: IParams): Promise<[Order[], number]> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const filters: any = {};
@@ -89,6 +91,8 @@ class OrdersRepository implements IOrdersRepository {
         .where("product.id = :productId", { productId })
         .select(select)
         .andWhere(filters)
+        .skip(offset || 0)
+        .take(limit || 10)
         .getManyAndCount();
 
       return orders;
@@ -101,6 +105,8 @@ class OrdersRepository implements IOrdersRepository {
       .leftJoinAndSelect("products.product", "product")
       .where(filters)
       .select(select)
+      .skip(offset || 0)
+      .take(limit || 10)
       .getManyAndCount();
 
     return orders;
