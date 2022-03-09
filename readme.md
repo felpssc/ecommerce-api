@@ -1,0 +1,1 @@
+![alt text](./src/assets/img/database-diagram.png)
