@@ -30,6 +30,8 @@ interface IOrdersRepository {
     productId,
   }: IParams): Promise<[Order[], number]>;
   findByClientId(clientId: string): Promise<Order[]>;
+  findById(id: string): Promise<Order>;
+  updateStatus(id: string, status: "pending" | "delivered"): Promise<Order>;
 }
 
 export { ICreateOrderDTO, IOrdersRepository, IParams };

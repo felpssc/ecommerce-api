@@ -116,6 +116,25 @@ class OrdersRepository implements IOrdersRepository {
 
     return orders;
   }
+
+  async findById(id: string): Promise<Order> {
+    const order = await this.repository.findOne({ id });
+
+    return order;
+  }
+
+  async updateStatus(
+    id: string,
+    status: "pending" | "delivered"
+  ): Promise<Order> {
+    const order = await this.repository.findOne({ id });
+
+    order.status = status;
+
+    await this.repository.save(order);
+
+    return order;
+  }
 }
 
 export { OrdersRepository };
