@@ -50,7 +50,7 @@ export class CreateOrder1646681531585 implements MigrationInterface {
         columnNames: ["clientId"],
         referencedColumnNames: ["id"],
         referencedTableName: "clients",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
         onUpdate: "CASCADE",
       })
     );

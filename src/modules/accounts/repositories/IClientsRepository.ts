@@ -8,6 +8,12 @@ interface ICreateClientDTO {
   phone: string;
 }
 
+interface IUpdateClientDTO {
+  name?: string;
+  password?: string;
+  phone?: string;
+}
+
 interface IClientsRepository {
   create({ name, email, password, phone }: ICreateClientDTO): Promise<Client>;
   findByEmail(email: string): Promise<Client | undefined>;
@@ -19,6 +25,11 @@ interface IClientsRepository {
     email,
     active,
   }: IParams): Promise<[Client[], number]>;
+  update(
+    id: string,
+    { name, password, phone }: IUpdateClientDTO
+  ): Promise<Client | undefined>;
+  delete(id: string): Promise<void>;
 }
 
-export { IClientsRepository, ICreateClientDTO };
+export { IClientsRepository, ICreateClientDTO, IUpdateClientDTO };

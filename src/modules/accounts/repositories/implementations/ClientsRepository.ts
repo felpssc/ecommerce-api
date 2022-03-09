@@ -1,8 +1,13 @@
+import bcrypt from "bcrypt";
 import { getRepository, Repository } from "typeorm";
 
 import { Client } from "../../entities/Client";
 import { IParams } from "../../useCases/listClients/ListClientsUseCase";
-import { IClientsRepository, ICreateClientDTO } from "../IClientsRepository";
+import {
+  IClientsRepository,
+  ICreateClientDTO,
+  IUpdateClientDTO,
+} from "../IClientsRepository";
 
 class ClientsRepository implements IClientsRepository {
   private repository: Repository<Client>;
@@ -88,6 +93,33 @@ class ClientsRepository implements IClientsRepository {
     await this.repository.save(client);
 
     return client;
+  }
+
+  async update(
+    id: string,
+    { name, password, phone }: IUpdateClientDTO
+  ): Promise<Client> {
+    const updateUser: IUpdateClientDTO = {};
+
+    if (password) {
+      updateUser.password = await bcrypt.hash(password, 10);
+    }
+
+    if (name) {
+      updateUser.name = name;
+    }
+
+    if (phone) {
+      updateUser.phone = phone;
+    }
+
+    await this.repository.update(id, updateUser);
+
+    return (await this.repository.findOne({ where: { id } })).hidePassword;
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repository.delete({ id });
   }
 }
 
