@@ -84,8 +84,8 @@ class OrdersRepository implements IOrdersRepository {
       const orders = await this.repository
         .createQueryBuilder("orders")
         .leftJoinAndSelect("orders.client", "client")
-        .innerJoinAndSelect("orders.products", "products")
-        .innerJoinAndSelect("products.product", "product")
+        .leftJoinAndSelect("orders.products", "products")
+        .leftJoinAndSelect("products.product", "product")
         .where("product.id = :productId", { productId })
         .select(select)
         .andWhere(filters)
@@ -97,8 +97,8 @@ class OrdersRepository implements IOrdersRepository {
     const orders = await this.repository
       .createQueryBuilder("orders")
       .leftJoin("orders.client", "client")
-      .innerJoinAndSelect("orders.products", "products")
-      .innerJoinAndSelect("products.product", "product")
+      .leftJoinAndSelect("orders.products", "products")
+      .leftJoinAndSelect("products.product", "product")
       .where(filters)
       .select(select)
       .getManyAndCount();
@@ -109,8 +109,8 @@ class OrdersRepository implements IOrdersRepository {
   findByClientId(clientId: string): Promise<Order[]> {
     const orders = this.repository
       .createQueryBuilder("orders")
-      .innerJoinAndSelect("orders.products", "products")
-      .innerJoinAndSelect("products.product", "product")
+      .leftJoinAndSelect("orders.products", "products")
+      .leftJoinAndSelect("products.product", "product")
       .where("orders.clientId = :clientId", { clientId })
       .getMany();
 
