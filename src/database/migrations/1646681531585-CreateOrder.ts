@@ -19,6 +19,7 @@ export class CreateOrder1646681531585 implements MigrationInterface {
           {
             name: "clientId",
             type: "uuid",
+            isNullable: true,
           },
           {
             name: "status",
@@ -50,7 +51,7 @@ export class CreateOrder1646681531585 implements MigrationInterface {
         columnNames: ["clientId"],
         referencedColumnNames: ["id"],
         referencedTableName: "clients",
-        onDelete: "CASCADE",
+        onDelete: "SET NULL",
         onUpdate: "CASCADE",
       })
     );

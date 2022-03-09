@@ -58,6 +58,7 @@ export class CreateAddress1646441578252 implements MigrationInterface {
         referencedColumnNames: ["id"],
         referencedTableName: "clients",
         onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       })
     );
   }

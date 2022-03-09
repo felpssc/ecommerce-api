@@ -19,10 +19,12 @@ export class CreateProductOrder1646682116291 implements MigrationInterface {
           {
             name: "productId",
             type: "uuid",
+            isNullable: true,
           },
           {
             name: "orderId",
             type: "uuid",
+            isNullable: true,
           },
           {
             name: "quantity",
@@ -61,7 +63,7 @@ export class CreateProductOrder1646682116291 implements MigrationInterface {
         columnNames: ["orderId"],
         referencedColumnNames: ["id"],
         referencedTableName: "orders",
-        onDelete: "CASCADE",
+        onDelete: "SET NULL",
         onUpdate: "CASCADE",
       })
     );
