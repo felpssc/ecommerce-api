@@ -12,7 +12,9 @@ class DeleteClientController implements IController {
 
     await deleteClientUseCase.execute(user.id);
 
-    return response.status(200).json({ message: "Conta deletada com sucesso" });
+    return response
+      .status(200)
+      .json({ message: "Account deleted successfully" });
   }
 }
 

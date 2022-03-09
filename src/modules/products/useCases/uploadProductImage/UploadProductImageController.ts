@@ -19,7 +19,7 @@ class UploadProductImageController implements IController {
     });
 
     return response.status(200).json({
-      message: "Imagens salvas com sucesso.",
+      message: "Images uploaded successfully",
     });
   }
 }
