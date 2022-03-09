@@ -50,6 +50,7 @@ export class CreateProductOrder1646682116291 implements MigrationInterface {
         referencedColumnNames: ["id"],
         referencedTableName: "products",
         onDelete: "SET NULL",
+        onUpdate: "CASCADE",
       })
     );
 
@@ -60,7 +61,8 @@ export class CreateProductOrder1646682116291 implements MigrationInterface {
         columnNames: ["orderId"],
         referencedColumnNames: ["id"],
         referencedTableName: "orders",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       })
     );
   }
