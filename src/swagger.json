@@ -1,0 +1,2041 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API - Ecommerce App",
+    "description": "This is an API for ecommerce service",
+    "version": "1.0.0",
+    "contact": {
+      "email": "carlosfelipesilva.fs@gmail.com"
+    }
+  },
+  "servers": [
+    {
+       "url": "http://localhost:3333/api/",
+       "description": "Development server"
+    }
+ ],
+ "paths": {
+   "/users": {
+    "post": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "Create a new user",
+      "description": "Create a new user",
+      "requestBody": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 8
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ],
+              "example": {
+                "email": "user@gmail.com",
+                "password": "12345678"
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "User created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "get": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "List all users",
+      "description": "List and filter users",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Token of user",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "description": "Limit of users to be returned",
+          "required": false,
+          "default": 10,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        {
+          "name": "offset",
+          "in": "query",
+          "description": "Offset of users to be returned",
+          "required": false,
+          "default": 0,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        {
+          "name": "email",
+          "in": "query",
+          "description": "Filter users by email",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        {
+          "name": "active",
+          "in": "query",
+          "description": "Filter users by active",
+          "required": false,
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        {
+          "name": "id",
+          "in": "query",
+          "description": "Filter users by id",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Users listed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": [
+                  [
+                    {
+                      "id": "f8d9e3e0-c3a5-11ea-b3de-0242ac130004",
+                      "email": "user@gmail.com",
+                      "active": false,
+                      "created_at": "2020-04-20T19:52:28.000Z",
+                      "updated_at": "2020-04-20T19:52:28.000Z"
+                    },
+                    {
+                      "id": "f8d9e3e0-c3a5-11ea-b3de-0242ac130005",
+                      "email": "user@gmail.com",
+                      "active": true,
+                      "created_at": "2020-04-20T19:52:28.000Z",
+                      "updated_at": "2020-04-20T19:52:28.000Z"
+                    }
+                  ],
+                  2
+                ]
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": [
+        "Users"
+      ],
+      "summary": "Delete a user profile",
+      "description": "Delete the authenticated user profile",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Token of user",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "User deleted",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+   },
+   "/users/profile": {
+    "get": {
+      "tags": [
+        "Users"
+      ],
+       "summary": "Get user profile",
+       "description": "Get the authenticated user profile",
+       "parameters": [
+         {
+           "name": "token",
+           "in": "header",
+           "description": "Token of user",
+           "required": true,
+           "schema": {
+             "type": "string"
+           }
+         }
+       ],
+       "responses": {
+         "200": {
+           "description": "User profile",
+           "content": {
+             "application/json": {
+               "schema": {
+                 "type": "object",
+                 "properties": {
+                   "id": {
+                     "type": "string",
+                     "format": "uuid"
+                   },
+                   "email": {
+                     "type": "string",
+                     "format": "email"
+                   },
+                   "active": {
+                     "type": "boolean",
+                     "default": false
+                   },
+                   "created_at": {
+                     "type": "string",
+                     "format": "date-time"
+                   },
+                   "updated_at": {
+                     "type": "string",
+                     "format": "date-time"
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "401": {
+           "description": "Unauthorized",
+           "content": {
+             "application/json": {
+               "schema": {
+                 "type": "object",
+                 "properties": {
+                   "message": {
+                     "type": "string"
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+    }
+  },
+  "/clients": {
+    "post": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "Create a client",
+      "description": "Create a new client",
+      "parameters": [
+        {
+          "name": "name",
+          "in": "body",
+          "description": "Name of client",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "email",
+          "in": "body",
+          "description": "Email of client",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        {
+          "name": "password",
+          "in": "body",
+          "description": "Password of client",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "minLength": 8
+          }
+        },
+        {
+          "name": "phone",
+          "in": "body",
+          "description": "Phone number of client",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "pattern": "^\\d{11}$"
+          }
+        },
+        {
+          "name": "address",
+          "in": "body",
+          "description": "Address of client",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "street": {
+                "type": "string"
+              },
+              "district": {
+                "type": "string"
+              },
+              "number": {
+                "type": "string"
+              },
+              "cep": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "201": {
+          "description": "Client created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "phone": {
+                        "type": "string",
+                        "pattern": "^\\d{11}$"
+                      },
+                      "active": {
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "street": {
+                        "type": "string"
+                      },
+                      "district": {
+                        "type": "string"
+                      },
+                      "number": {
+                        "type": "string"
+                      },
+                      "cep": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "get": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "List all clients",
+      "description": "List and filter all clients",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Token of user",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "offset",
+          "in": "query",
+          "description": "Offset of clients to be returned",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "default": 0
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "description": "Limit of clients to be returned",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "default": 10
+          }
+        },
+        {
+          "name": "email",
+          "in": "query",
+          "description": "Email of client",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        {
+          "name": "active",
+          "in": "query",
+          "description": "Active status of client",
+          "required": false,
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        {
+          "name": "id",
+          "in": "query",
+          "description": "ID of client",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Clients listed",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": [
+                  [
+                    {
+                      "id": "f8d9e3e0-c3a5-11ea-b3de-0242ac130004",
+                      "name": "Client 1",
+                      "email": "client1@gmail.com",
+                      "phone": "11987654321",
+                      "active": false,
+                      "created_at": "2020-04-20T19:52:28.000Z",
+                      "updated_at": "2020-04-20T19:52:28.000Z"
+                    },
+                    {
+                      "id": "f8d9e3e0-c3a5-11ea-b3de-0242ac130005",
+                      "name": "Client 2",
+                      "email": "client2@gmail.com",
+                      "phone": "11987654321",
+                      "active": true,
+                      "created_at": "2020-04-20T19:52:28.000Z",
+                      "updated_at": "2020-04-20T19:52:28.000Z"
+                    }
+                  ],
+                  2
+                ]
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "Update client",
+      "description": "Update the authenticated client",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Token of client",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "name",
+          "in": "body",
+          "description": "Name of client",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "password",
+          "in": "body",
+          "description": "Password of client",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "minLength": 8
+          }
+        },
+        {
+          "name": "phone",
+          "in": "body",
+          "description": "Phone number of client",
+          "required": false,
+          "schema": {
+            "type": "string",
+            "pattern": "^\\d{11}$"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Client updated",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "pattern": "^\\d{11}$"
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "Delete client",
+      "description": "Delete the authenticated client",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Token of client",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Client deleted",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/clients/profile": {
+    "get": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "Get client profile",
+      "description": "Get the authenticated client profile",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Token of client",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Client profile",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "pattern": "^\\d{11}$"
+                  },
+                  "active": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/clients/my-orders": {
+    "get": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "Get client orders",
+      "description": "Get the authenticated client orders",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Token of client",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Client orders",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "example": [
+                  [
+                    {
+                      "id": "78dd4c05-2b8e-4ed6-bf97-8e273f49547e",
+                      "clientId": "14407ff4-c6ad-45d2-a0df-ba92b978b686",
+                      "status": "pending",
+                      "payment_price": "20.00",
+                      "created_at": "2022-03-08T00:06:28.011Z",
+                      "updated_at": "2022-03-08T00:06:28.011Z",
+                      "products": [
+                        {
+                          "id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                          "productId": "d94afd87-a890-4dd6-81b7-e4a2b565cc22",
+                          "quantity": 2,
+                          "orderId": "78dd4c05-2b8e-4ed6-bf97-8e273f49547e",
+                          "created_at": "2022-03-08T00:06:28.032Z",
+                          "updated_at": "2022-03-08T00:06:28.032Z",
+                          "product": {
+                            "id": "d94afd87-a890-4dd6-81b7-e4a2b565cc22",
+                            "name": "Produto de teste",
+                            "price": "10.00",
+                            "code": "A123",
+                            "characteristics": "Esse é um produto para fins de testes",
+                            "created_at": "2022-03-06T16:20:37.089Z",
+                            "updated_at": "2022-03-06T16:20:37.089Z"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "1504b09e-4e63-4f6d-9163-5147fd2de905",
+                      "clientId": "14407ff4-c6ad-45d2-a0df-ba92b978b686",
+                      "status": "pending",
+                      "payment_price": "254.00",
+                      "created_at": "2022-03-08T00:11:32.137Z",
+                      "updated_at": "2022-03-08T00:11:32.137Z",
+                      "products": [
+                        {
+                          "id": "28dedf7f-6b0f-4610-804b-a4981b3e0bc6",
+                          "productId": "d94afd87-a890-4dd6-81b7-e4a2b565cc22",
+                          "quantity": 2,
+                          "orderId": "1504b09e-4e63-4f6d-9163-5147fd2de905",
+                          "created_at": "2022-03-08T00:11:32.147Z",
+                          "updated_at": "2022-03-08T00:11:32.147Z",
+                          "product": {
+                            "id": "d94afd87-a890-4dd6-81b7-e4a2b565cc22",
+                            "name": "Produto de teste",
+                            "price": "10.00",
+                            "code": "A123",
+                            "characteristics": "Esse é um produto para fins de testes",
+                            "created_at": "2022-03-06T16:20:37.089Z",
+                            "updated_at": "2022-03-06T16:20:37.089Z"
+                          }
+                        },
+                        {
+                          "id": "444d2703-034d-43f2-a491-f5f0133785a9",
+                          "productId": "a6d16d6a-e30c-4ddd-a248-715c8e8ec154",
+                          "quantity": 3,
+                          "orderId": "1504b09e-4e63-4f6d-9163-5147fd2de905",
+                          "created_at": "2022-03-08T00:11:32.147Z",
+                          "updated_at": "2022-03-08T00:11:32.147Z",
+                          "product": {
+                            "id": "a6d16d6a-e30c-4ddd-a248-715c8e8ec154",
+                            "name": "Mouse Gamer",
+                            "price": "78.00",
+                            "code": "B123",
+                            "characteristics": "Esse é um produto para fins de testes",
+                            "created_at": "2022-03-08T00:10:47.870Z",
+                            "updated_at": "2022-03-08T00:10:47.870Z"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "17557116-8776-412c-881a-1ab41522d179",
+                      "clientId": "14407ff4-c6ad-45d2-a0df-ba92b978b686",
+                      "status": "pending",
+                      "payment_price": "254.00",
+                      "created_at": "2022-03-08T01:29:01.105Z",
+                      "updated_at": "2022-03-08T01:29:01.105Z",
+                      "products": [
+                        {
+                          "id": "de2a1443-e256-4642-a9ba-b7dc790e2a81",
+                          "productId": "d94afd87-a890-4dd6-81b7-e4a2b565cc22",
+                          "quantity": 2,
+                          "orderId": "17557116-8776-412c-881a-1ab41522d179",
+                          "created_at": "2022-03-08T01:29:01.124Z",
+                          "updated_at": "2022-03-08T01:29:01.124Z",
+                          "product": {
+                            "id": "d94afd87-a890-4dd6-81b7-e4a2b565cc22",
+                            "name": "Produto de teste",
+                            "price": "10.00",
+                            "code": "A123",
+                            "characteristics": "Esse é um produto para fins de testes",
+                            "created_at": "2022-03-06T16:20:37.089Z",
+                            "updated_at": "2022-03-06T16:20:37.089Z"
+                          }
+                        },
+                        {
+                          "id": "9a5bbfb4-b3ff-4300-a5ff-f176ade27bcf",
+                          "productId": "a6d16d6a-e30c-4ddd-a248-715c8e8ec154",
+                          "quantity": 3,
+                          "orderId": "17557116-8776-412c-881a-1ab41522d179",
+                          "created_at": "2022-03-08T01:29:01.124Z",
+                          "updated_at": "2022-03-08T01:29:01.124Z",
+                          "product": {
+                            "id": "a6d16d6a-e30c-4ddd-a248-715c8e8ec154",
+                            "name": "Mouse Gamer",
+                            "price": "78.00",
+                            "code": "B123",
+                            "characteristics": "Esse é um produto para fins de testes",
+                            "created_at": "2022-03-08T00:10:47.870Z",
+                            "updated_at": "2022-03-08T00:10:47.870Z"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/auth/verify-account/:code": {
+    "get": {
+      "tags": [
+        "Authentication"
+      ],
+      "summary": "Verify account",
+      "description": "Verify account by email",
+      "parameters": [
+        {
+          "name": "code",
+          "in": "path",
+          "description": "Verification code",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": "Account verified successfully"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/auth/user/session": {
+    "post": {
+      "tags": [
+        "Authentication"
+      ],
+      "summary": "Get user session",
+      "description": "Get user session",
+      "parameters": [
+        {
+          "name": "email",
+          "in": "body",
+          "description": "User email",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "password",
+          "in": "body",
+          "description": "User password",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "user": {
+                    "email": "user@gmail.com"
+                  },
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoZW50aWNhdGVkIjp7ImVtYWlsIjoiYWRtaW5AZW1haWwuY29tIiwidXNlcl90eXBlIjoidXNlciJ9LCJpYXQiOjE2NDY4NTYxNzEsInN1YiI6IjZhODNiNzdjLWRmYjMtNGMxOS04M2MzLTQzYWJmNzY4MWMyZiJ9.OYpnhp_u2fUhDmf07VtrleJ5lSNnd8V_rsgoUqF_GeI"
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/auth/client/session": {
+    "post": {
+      "tags": [
+        "Authentication"
+      ],
+      "summary": "Get client session",
+      "description": "Get client session",
+      "parameters": [
+        {
+          "name": "email",
+          "in": "body",
+          "description": "Client email",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "password",
+          "in": "body",
+          "description": "Client password",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "client": {
+                    "email": "client1@gmail.com"
+                  },
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRoZW50aWNhdGVkIjp7ImVtYWlsIjoiYWRtaW5AZW1haWwuY29tIiwidXNlcl90eXBlIjoidXNlciJ9LCJpYXQiOjE2NDY4NTYxNzEsInN1YiI6IjZhODNiNzdjLWRmYjMtNGMxOS04M2MzLTQzYWJmNzY4MWMyZiJ9.OYpnhp_u2fUhDmf07VtrleJ5lSNnd8V_rsgoUqF_GeI"
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/products": {
+    "post": {
+      "tags": [
+        "Products"
+      ],
+      "summary": "Create product",
+      "description": "Create a new product",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "User token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "name",
+          "in": "body",
+          "description": "Product name",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "price",
+          "in": "body",
+          "description": "Product price",
+          "required": true,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "characteristics",
+          "in": "body",
+          "description": "Product characteristics",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "code",
+          "in": "body",
+          "description": "Product code",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "201": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "5e9f8f8f-f8f8-4f8f-8f8f-8f8f8f8f8f8f",
+                  "name": "Product 1",
+                  "price": 100,
+                  "characteristics": "Product 1 characteristics",
+                  "code": "product1",
+                  "created_at": "2020-04-20T19:52:28.000Z",
+                  "updated_at": "2020-04-20T19:52:28.000Z"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "get": {
+      "tags": [
+        "Products"
+      ],
+      "summary": "List all products",
+      "description": "List and filter all products",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "User or Client token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "description": "Limit return of products",
+          "required": false,
+          "schema": {
+            "type": "number",
+            "default": 10
+          }
+        },
+        {
+          "name": "offset",
+          "in": "query",
+          "description": "Offset return of products",
+          "required": false,
+          "schema": {
+            "type": "number",
+            "default": 0
+          }
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "description": "Product name",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "minPrice",
+          "in": "query",
+          "description": "Minimum product price",
+          "required": false,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "maxPrice",
+          "in": "query",
+          "description": "Maximum product price",
+          "required": false,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "code",
+          "in": "query",
+          "description": "Product code",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "id",
+          "in": "query",
+          "description": "Product id",
+          "required": false,
+          "schema": {
+            "type": "uuid"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "example": [
+                  [
+                    {
+                      "id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                      "name": "Product 1",
+                      "price": 100,
+                      "code": "Code 1",
+                      "characteristics": "Characteristics 1",
+                      "created_at": "2020-01-01T00:00:00.000Z",
+                      "updated_at": "2020-01-01T00:00:00.000Z",
+                      "images": [
+                        {
+                          "id": "0d8f9f8e-f8e1-4f0e-b8e8-f8f8f8f8f8f8",
+                          "file": "key.png",
+                          "url": "https://key-example.com",
+                          "productId": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                          "created_at": "2020-01-01T00:00:00.000Z"
+                        } 
+                      ]
+                    }
+                  ],
+                  2
+                ]
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/products/:productId/images": {
+    "post": {
+      "tags": [
+        "Products"
+      ],
+      "summary": "Add images to product",
+      "description": "Add images to a specific product",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "User token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "productId",
+          "in": "path",
+          "description": "Product id",
+          "required": true,
+          "schema": {
+            "type": "uuid"
+          }
+        },
+        {
+          "name": "images",
+          "in": "formData",
+          "description": "Images to add",
+          "required": true,
+          "schema": {
+            "type": "data",
+            "format": "file"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": "Imagens salvas com sucesso"
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/products/:id": {
+    "put": {
+      "tags": [
+        "Products"
+      ],
+      "summary": "Update product",
+      "description": "Update a specific product",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "User token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Product id",
+          "required": true,
+          "schema": {
+            "type": "uuid"
+          }
+        },
+        {
+          "name": "name",
+          "in": "formData",
+          "description": "Product name",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "price",
+          "in": "formData",
+          "description": "Product price",
+          "required": false,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "code",
+          "in": "formData",
+          "description": "Product code",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "characteristics",
+          "in": "formData",
+          "description": "Product characteristics",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                  "name": "Product 1",
+                  "price": 100,
+                  "code": "Code 1",
+                  "characteristics": "Characteristics 1",
+                  "created_at": "2020-01-01T00:00:00.000Z",
+                  "updated_at": "2020-01-02T00:00:00.000Z"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": [
+        "Products"
+      ],
+      "summary": "Delete product",
+      "description": "Delete a specific product",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "User token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Product id",
+          "required": true,
+          "schema": {
+            "type": "uuid"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                  "name": "Product 1",
+                  "price": 100,
+                  "code": "Code 1",
+                  "characteristics": "Characteristics 1",
+                  "created_at": "2020-01-01T00:00:00.000Z",
+                  "updated_at": "2020-01-02T00:00:00.000Z"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/products/images/:imageId": {
+    "delete": {
+      "tags": [
+        "Products"
+      ],
+      "summary": "Delete product image",
+      "description": "Delete a specific product image",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "User token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "imageId",
+          "in": "path",
+          "description": "Product image id",
+          "required": true,
+          "schema": {
+            "type": "uuid"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": "Image deleted successfully"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/orders/create": {
+    "post": {
+      "tags": [
+        "Orders"
+      ],
+      "summary": "Create order",
+      "description": "Create a new order",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Client token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "products",
+          "in": "body",
+          "description": "Products",
+          "required": true,
+          "schema": {
+            "type": "object",
+            "example": {
+              "items": [
+                {
+                  "id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                  "quantity": 1
+                },
+                {
+                  "id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                  "quantity": 2
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                  "client_id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                  "status": "pending",
+                  "payment_price": 15.90,
+                  "created_at": "2020-01-01T00:00:00.000Z",
+                  "updated_at": "2020-01-02T00:00:00.000Z"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/orders": {
+    "get": {
+      "tags": [
+        "Orders"
+      ],
+      "summary": "List orders",
+      "description": "List and filter all orders",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "User token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "offset",
+          "in": "query",
+          "description": "Offset",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "description": "Limit",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        {
+          "name": "startDate",
+          "in": "query",
+          "description": "Start date",
+          "required": false,
+          "schema": {
+            "type": "time",
+            "format": "date-time"
+          }
+        },
+        {
+          "name": "minPaymentPrice",
+          "in": "query",
+          "description": "Min payment price",
+          "required": false,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "maxPaymentPrice",
+          "in": "query",
+          "description": "Max payment price",
+          "required": false,
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "clientId",
+          "in": "query",
+          "description": "Client id",
+          "required": false,
+          "schema": {
+            "type": "uuid"
+          }
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Status",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "/orders/:id": {
+    "put": {
+      "tags": [
+        "Orders"
+      ],
+      "summary": "Update order status",
+      "description": "Update an order status",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "User token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Order id",
+          "required": true,
+          "schema": {
+            "type": "uuid"
+          }
+        },
+        {
+          "name": "status",
+          "in": "body",
+          "description": "Status",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                  "client_id": "02923da2-9ceb-469d-94b7-64797302ed2d",
+                  "status": "delivered",
+                  "payment_price": 15.90,
+                  "created_at": "2020-01-01T00:00:00.000Z",
+                  "updated_at": "2020-01-02T00:00:00.000Z"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+ }
+}
