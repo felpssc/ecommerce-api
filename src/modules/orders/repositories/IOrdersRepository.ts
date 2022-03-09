@@ -15,6 +15,8 @@ interface IParams {
   maxPaymentPrice?: number;
   status?: "pending" | "delivered";
   productId?: string;
+  limit?: number;
+  offset?: number;
 }
 
 interface IOrdersRepository {
@@ -28,6 +30,8 @@ interface IOrdersRepository {
     maxPaymentPrice,
     status,
     productId,
+    limit,
+    offset,
   }: IParams): Promise<[Order[], number]>;
   findByClientId(clientId: string): Promise<Order[]>;
   findById(id: string): Promise<Order>;
