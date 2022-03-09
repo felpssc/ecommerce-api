@@ -12,6 +12,7 @@ interface IUsersRepository {
   create({ email, password }: ICreateUserDTO): Promise<User>;
   activateUser(id: string): Promise<User | undefined>;
   findAll({ limit, offset, email, active }: IParams): Promise<[User[], number]>;
+  delete(id: string): Promise<void>;
 }
 
 export { IUsersRepository, ICreateUserDTO };
