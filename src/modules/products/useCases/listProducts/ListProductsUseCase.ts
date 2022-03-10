@@ -1,18 +1,17 @@
 import "dotenv/config";
 import { inject, injectable } from "tsyringe";
 
-import { IStorageProvider } from "../../../../shared/container/providers/StorageProvider/IStorageProvider";
 import { Product } from "../../entities/Product";
-import { ProductsRepository } from "../../repositories/implementations/ProductsRepository";
-import { IParams } from "../../repositories/IProductsRepository";
+import {
+  IParams,
+  IProductsRepository,
+} from "../../repositories/IProductsRepository";
 
 @injectable()
 class ListProductsUseCase {
   constructor(
     @inject("ProductsRepository")
-    private productsRepository: ProductsRepository,
-    @inject("S3StorageProvider")
-    private s3StorageProvider: IStorageProvider
+    private productsRepository: IProductsRepository
   ) {}
 
   async execute({
