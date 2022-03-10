@@ -32,8 +32,6 @@ class CreateClientAddressUseCase {
       throw new AppError(error.message);
     }
 
-    console.log(value);
-
     const address = await this.addressesRepository.create({
       ...value,
       clientId,
