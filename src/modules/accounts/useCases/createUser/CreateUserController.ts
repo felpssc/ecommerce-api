@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { container } from "tsyringe";
 
 import { IController } from "../../../../core/Controller/IController";
+import { SendEmailVerification } from "../../../../helpers/sendEmailVerification/implementations/SendEmailVerification";
 import { CreateUserUseCase } from "./CreateUserUseCase";
 
 class CreateUserController implements IController {
@@ -11,6 +12,13 @@ class CreateUserController implements IController {
     const createUserUseCase = container.resolve(CreateUserUseCase);
 
     const user = await createUserUseCase.execute({ email, password });
+
+    const sendEmailVerification = container.resolve(SendEmailVerification);
+
+    await sendEmailVerification.execute({
+      email,
+      user_id: user.id,
+    });
 
     return response.status(201).json(user);
   }
