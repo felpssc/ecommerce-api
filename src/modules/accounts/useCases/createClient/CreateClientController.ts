@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { container } from "tsyringe";
 
 import { IController } from "../../../../core/Controller/IController";
+import { SendEmailVerification } from "../../../../helpers/sendEmailVerification/implementations/SendEmailVerification";
 import { CreateClientUseCase } from "./CreateClientUseCase";
 
 class CreateClientController implements IController {
@@ -15,6 +16,13 @@ class CreateClientController implements IController {
       email,
       password,
       phone,
+    });
+
+    const sendEmailVerification = container.resolve(SendEmailVerification);
+
+    await sendEmailVerification.execute({
+      email,
+      client_id: client.id,
     });
 
     return response.status(201).json(client);

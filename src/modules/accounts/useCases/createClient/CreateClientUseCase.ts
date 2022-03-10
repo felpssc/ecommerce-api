@@ -1,11 +1,9 @@
 import bcrypt from "bcrypt";
-import { container, inject, injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
-import { SendEmailVerification } from "../../../../helpers/sendEmailVerification/implementations/SendEmailVerification";
 import { createClientSchema } from "../../../../helpers/validators/client/createClient.validator";
 import { AppError } from "../../../../shared/errors/AppError";
 import { Client } from "../../entities/Client";
-import { IAddressesRepository } from "../../repositories/IAddressesRepository";
 import { IClientsRepository } from "../../repositories/IClientsRepository";
 
 interface IRequest {
@@ -19,9 +17,7 @@ interface IRequest {
 class CreateClientUseCase {
   constructor(
     @inject("ClientsRepository")
-    private clientsRepository: IClientsRepository,
-    @inject("AddressesRepository")
-    private addressesRepository: IAddressesRepository
+    private clientsRepository: IClientsRepository
   ) {}
 
   async execute({ name, email, password, phone }: IRequest): Promise<Client> {
@@ -47,13 +43,6 @@ class CreateClientUseCase {
     const client = await this.clientsRepository.create({
       ...value,
       password: hashedPassword,
-    });
-
-    const sendEmailVerification = container.resolve(SendEmailVerification);
-
-    await sendEmailVerification.execute({
-      email,
-      client_id: client.id,
     });
 
     return client.hidePassword;
