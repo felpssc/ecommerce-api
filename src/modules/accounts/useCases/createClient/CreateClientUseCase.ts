@@ -5,10 +5,7 @@ import { SendEmailVerification } from "../../../../helpers/sendEmailVerification
 import { createClientSchema } from "../../../../helpers/validators/client/createClient.validator";
 import { AppError } from "../../../../shared/errors/AppError";
 import { Client } from "../../entities/Client";
-import {
-  IAddressesRepository,
-  ICreateAddressDTO,
-} from "../../repositories/IAddressesRepository";
+import { IAddressesRepository } from "../../repositories/IAddressesRepository";
 import { IClientsRepository } from "../../repositories/IClientsRepository";
 
 interface IRequest {
@@ -16,17 +13,6 @@ interface IRequest {
   email: string;
   password: string;
   phone: string;
-  address: ICreateAddressDTO;
-}
-
-interface IResponse {
-  client: Client;
-  address: {
-    street: string;
-    district: string;
-    number: string;
-    cep: string;
-  };
 }
 
 @injectable()
@@ -38,19 +24,12 @@ class CreateClientUseCase {
     private addressesRepository: IAddressesRepository
   ) {}
 
-  async execute({
-    name,
-    email,
-    password,
-    phone,
-    address,
-  }: IRequest): Promise<IResponse> {
+  async execute({ name, email, password, phone }: IRequest): Promise<Client> {
     const { error, value } = createClientSchema.validate({
       name,
       email,
       password,
       phone,
-      address,
     });
 
     if (error) {
@@ -70,11 +49,6 @@ class CreateClientUseCase {
       password: hashedPassword,
     });
 
-    const clientAddress = await this.addressesRepository.create({
-      ...address,
-      clientId: client.id,
-    });
-
     const sendEmailVerification = container.resolve(SendEmailVerification);
 
     await sendEmailVerification.execute({
@@ -82,17 +56,7 @@ class CreateClientUseCase {
       client_id: client.id,
     });
 
-    const responseClient: IResponse = {
-      client: client.hidePassword,
-      address: {
-        street: clientAddress.street,
-        district: clientAddress.district,
-        number: clientAddress.number,
-        cep: clientAddress.cep,
-      },
-    };
-
-    return responseClient;
+    return client.hidePassword;
   }
 }
 

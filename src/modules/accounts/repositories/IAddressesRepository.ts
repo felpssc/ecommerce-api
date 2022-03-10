@@ -8,6 +8,13 @@ interface ICreateAddressDTO {
   clientId: string;
 }
 
+interface IUpdateAddressDTO {
+  street?: string;
+  district?: string;
+  number?: string;
+  cep?: string;
+}
+
 interface IAddressesRepository {
   create({
     street,
@@ -16,7 +23,13 @@ interface IAddressesRepository {
     cep,
     clientId,
   }: ICreateAddressDTO): Promise<Address>;
-  findByUserId(userId: string): Promise<Address[]>;
+  findById(id: string): Promise<Address>;
+  findByClientId(clientId: string): Promise<Address[]>;
+  update(
+    id: string,
+    { street, district, number, cep }: IUpdateAddressDTO
+  ): Promise<Address>;
+  delete(id: string): Promise<void>;
 }
 
-export { IAddressesRepository, ICreateAddressDTO };
+export { IAddressesRepository, ICreateAddressDTO, IUpdateAddressDTO };

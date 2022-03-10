@@ -395,29 +395,6 @@
             "type": "string",
             "pattern": "^\\d{11}$"
           }
-        },
-        {
-          "name": "address",
-          "in": "body",
-          "description": "Address of client",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "street": {
-                "type": "string"
-              },
-              "district": {
-                "type": "string"
-              },
-              "number": {
-                "type": "string"
-              },
-              "cep": {
-                "type": "string"
-              }
-            }
-          }
         }
       ],
       "responses": {
@@ -427,56 +404,14 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "client": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "format": "uuid"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "email": {
-                        "type": "string",
-                        "format": "email"
-                      },
-                      "phone": {
-                        "type": "string",
-                        "pattern": "^\\d{11}$"
-                      },
-                      "active": {
-                        "type": "boolean",
-                        "default": false
-                      },
-                      "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                      },
-                      "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                    }
-                  },
-                  "address": {
-                    "type": "object",
-                    "properties": {
-                      "street": {
-                        "type": "string"
-                      },
-                      "district": {
-                        "type": "string"
-                      },
-                      "number": {
-                        "type": "string"
-                      },
-                      "cep": {
-                        "type": "string"
-                      }
-                    }
-                  }
+                "example": {
+                  "id": "f8d9e3e0-c3a5-11ea-b3de-0242ac130004",
+                  "name": "Client 1",
+                  "email": "client1@gmail.com",
+                  "phone": "12345678901",
+                  "active": false,
+                  "created_at": "2020-04-20T19:52:28.000Z",
+                  "updated_at": "2020-04-20T19:52:28.000Z"
                 }
               }
             }
@@ -1005,6 +940,366 @@
                     }
                   ]
                 ]
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/clients/addresses": {
+    "post": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "Adds a new address to a client",
+      "description": "",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Client token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "street",
+          "in": "body",
+          "description": "Street",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "district",
+          "in": "body",
+          "description": "District",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "number",
+          "in": "body",
+          "description": "Number",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "cep",
+          "in": "body",
+          "description": "CEP",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "5e8f8f8f-8f8f-8f8f-8f8f-8f8f8f8f8f8f",
+                  "street": "Rua Teste",
+                  "district": "Bairro Teste",
+                  "number": "123",
+                  "cep": "12345678",
+                  "created_at": "2022-03-08T01:29:01.124Z",
+                  "updated_at": "2022-03-08T01:29:01.124Z"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "get": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "List all addresses of a client",
+      "description": "",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Client token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": [
+                  {
+                    "id": "5e8f8f8f-8f8f-8f8f-8f8f-8f8f8f8f8f8f",
+                    "street": "Rua Teste",
+                    "district": "Bairro Teste",
+                    "number": "123",
+                    "cep": "12345678",
+                    "created_at": "2022-03-08T01:29:01.124Z",
+                    "updated_at": "2022-03-08T01:29:01.124Z"
+                  },
+                  {
+                    "id": "5e8f8f8f-8f8f-8f8f-8f8f-8f8f8f8f8f8f",
+                    "street": "Rua Teste",
+                    "district": "Bairro Teste",
+                    "number": "123",
+                    "cep": "12345678",
+                    "created_at": "2022-03-08T01:29:01.124Z",
+                    "updated_at": "2022-03-08T01:29:01.124Z"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/clients/addresses/:addressId": {
+    "put": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "Updates an address of a client",
+      "description": "",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Client token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "addressId",
+          "in": "path",
+          "description": "Address ID",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "street",
+          "in": "body",
+          "description": "Street",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "district",
+          "in": "body",
+          "description": "District",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "number",
+          "in": "body",
+          "description": "Number",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "cep",
+          "in": "body",
+          "description": "CEP",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "id": "5e8f8f8f-8f8f-8f8f-8f8f-8f8f8f8f8f8f",
+                  "street": "Rua Teste",
+                  "district": "Bairro Teste",
+                  "number": "123",
+                  "cep": "12345678",
+                  "created_at": "2022-03-08T01:29:01.124Z",
+                  "updated_at": "2022-03-08T01:29:01.124Z"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Unauthorized",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": [
+        "Clients"
+      ],
+      "summary": "Deletes an address of a client",
+      "description": "",
+      "parameters": [
+        {
+          "name": "token",
+          "in": "header",
+          "description": "Client token",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "addressId",
+          "in": "path",
+          "description": "Address ID",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Success",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "message": "Address deleted successfully"
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }

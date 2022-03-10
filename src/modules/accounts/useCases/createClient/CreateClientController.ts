@@ -6,7 +6,7 @@ import { CreateClientUseCase } from "./CreateClientUseCase";
 
 class CreateClientController implements IController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { name, email, password, phone, address } = request.body;
+    const { name, email, password, phone } = request.body;
 
     const createClientUseCase = container.resolve(CreateClientUseCase);
 
@@ -15,7 +15,6 @@ class CreateClientController implements IController {
       email,
       password,
       phone,
-      address,
     });
 
     return response.status(201).json(client);
